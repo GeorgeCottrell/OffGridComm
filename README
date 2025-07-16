@@ -93,6 +93,23 @@ International support is provided via modular importers for country-specific lic
 
 ---
 
+## 🔏 Password Handling and FCC Compliance
+
+OffGridComm does not transmit or share passwords over RF. All passwords are:
+
+* Used only for **local login authentication**
+* Stored securely on-device using modern password hashing (e.g., Argon2)
+* Never transmitted, encrypted or otherwise, in compliance with FCC Part 97
+
+Operator identity over the network is established via:
+
+* Publicly visible callsigns
+* Optional node-origin signatures (plaintext verifiable)
+
+This design ensures both user accountability and regulatory compliance without compromising privacy or system integrity.
+
+---
+
 ## ⚠️ Legal Notice
 
 You must be a **licensed amateur radio operator** to use OffGridComm over RF bands. Unauthorized or encrypted use over amateur frequencies is **prohibited** and may violate local or national laws.
