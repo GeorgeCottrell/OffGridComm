@@ -1,147 +1,161 @@
-OffGridComm
+# OffGridComm
 
-OffGridComm is a decentralized, low-bandwidth communications platform built for ham radio frequencies. Inspired by classic BBS systems and modern mesh networks, it is designed for asynchronous, legally compliant communication in offline and grid-down environments.
+**OffGridComm** is a decentralized, low-bandwidth communications platform built for ham radio frequencies. Inspired by classic BBS systems and modern mesh networks, it is designed for asynchronous, legally compliant communication in offline and grid-down environments.
 
-🎯 Purpose
+---
+
+## 🎯 Purpose
 
 OffGridComm enables licensed amateur radio operators to:
 
-Send and receive direct or group messages
+* Send and receive direct or group messages
+* Participate in Usenet-style interest-based discussion boards
+* Relay messages node-to-node using amateur radio frequencies (no internet required)
+* Operate with a clean, ANSI-art capable text-based interface (TUI)
+* Ensure message authenticity through callsign-based identity
+* Support mouse and keyboard navigation via modern terminal emulators (e.g. PuTTY, SyncTERM)
 
-Participate in Usenet-style interest-based discussion boards
+---
 
-Relay messages node-to-node using amateur radio frequencies (no internet required)
+## 🔐 Legal Compliance
 
-Operate with a clean, ANSI-art capable text-based interface (TUI)
+OffGridComm is designed in full alignment with **FCC Part 97** regulations:
 
-Ensure message authenticity through callsign-based identity
+* No encryption is used
+* All messages are tied to valid amateur radio callsigns
+* All content is non-commercial
+* Supports only licensed operators as authenticated users
 
-Support mouse and keyboard navigation via modern terminal emulators (e.g. PuTTY, SyncTERM)
+---
 
-🔐 Legal Compliance
+## 🚧 MVP (Minimum Viable Product)
 
-OffGridComm is designed in full alignment with FCC Part 97 regulations:
+### ✅ Phase 1 Goals:
 
-No encryption is used
+* [ ] TUI interface with ANSI display and mouse/keyboard navigation
+* [ ] Callsign-based login and identity system
+* [ ] Message composition, viewing, and local storage
+* [ ] Group message board system (like Usenet)
+* [ ] RF packet exchange between nodes (via AX.25 or other modes)
+* [ ] Local deduplication and message propagation system
+* [ ] Static offline callsign database verification
 
-All messages are tied to valid amateur radio callsigns
+### 🔜 Phase 2 Goals:
 
-All content is non-commercial
+* [ ] Internet-connected nodes can fetch up-to-date callsign databases
+* [ ] Online nodes compress and sign these updates
+* [ ] Offline nodes receive updates via RF from trusted peers
+* [ ] Support international callsign data via modular country-specific importers
+* [ ] RF-safe distribution of additional resources (weather, bulletins, software updates)
 
-Supports only licensed operators as authenticated users
+---
 
-🚧 MVP (Minimum Viable Product)
+## 🧱 Architecture Overview
 
-✅ Phase 1 Goals:
+Each **OffGridComm Node** includes:
 
+* TUI frontend with ANSI support (`ratatui`)
+* Message system (direct, group)
+* Identity/auth engine (callsign + password)
+* RF interface layer (Direwolf, soundmodem, etc.)
+* Node sync protocol (custom, store-and-forward)
+* Optional internet module to fetch and rebroadcast trusted data updates
 
+> Future versions will support automated scheduling, message compression, and regional relays.
 
-🔜 Phase 2 Goals:
+---
 
+## 🛠️ Built With
 
+* Rust 🦠 (core logic + TUI)
+* `ratatui`, `crossterm`, and `tui-input` (terminal UI)
+* `serde`, `serde_json`, `ron`, and `toml` (serialization and config)
+* `sqlx` and `rusqlite` (SQLite database support)
+* `tokio`, `axum`, `tower`, `hyper`, and `tokio-tungstenite` (async runtime and web stack)
+* `argon2`, `blake3`, `uuid`, and `rand` (crypto and identity)
+* `flate2`, `lz4_flex`, and `zstd` (compression)
+* `reqwest` and `dotenvy` (HTTP and environment handling)
+* `serialport` and `ax25` (RF transport, serial interface)
+* `tracing`, `anyhow`, and `thiserror` (logging and error handling)
 
-🧱 Architecture Overview
+---
 
-Each OffGridComm Node includes:
+## 📡 Supported Transmission Modes
 
-TUI frontend with ANSI support (ratatui)
+OffGridComm is designed to be transport-agnostic. Supported RF communication modes include:
 
-Message system (direct, group)
+* **AX.25 (1200/9600 baud)** — Reliable and open
+* **VARA FM** (optional) — Fast, soundcard-based modem up to 25 kbps
+* **JS8Call / FreeDV / FT8** (planned) — Ultra-low-bandwidth for extreme conditions
+* **Microwave Mesh (HamWAN / AREDN)** — High-speed regional links
 
-Identity/auth engine (callsign + password)
+> Note: VARA FM is proprietary software and requires a license for full-speed operation.
 
-RF interface layer (Direwolf, soundmodem, etc.)
+---
 
-Node sync protocol (custom, store-and-forward)
-
-Optional internet module to fetch and rebroadcast trusted data updates
-
-Future versions will support automated scheduling, message compression, and regional relays.
-
-🛠️ Built With
-
-Rust 🦠 (core logic + TUI)
-
-ratatui, crossterm, and tui-input (terminal UI)
-
-serde, serde_json, ron, and toml (serialization and config)
-
-sqlx and rusqlite (SQLite database support)
-
-tokio, axum, tower, hyper, and tokio-tungstenite (async runtime and web stack)
-
-argon2, blake3, uuid, and rand (crypto and identity)
-
-flate2, lz4_flex, and zstd (compression)
-
-reqwest and dotenvy (HTTP and environment handling)
-
-serialport and ax25 (RF transport, serial interface)
-
-tracing, anyhow, and thiserror (logging and error handling)
-
-🔄 Callsign Verification Strategy
+## 🔄 Callsign Verification Strategy
 
 OffGridComm uses a hybrid approach:
 
-A static snapshot of a public callsign database (FCC or other)
-
-Optional self-attestation or license submission during setup
-
-Optional download of updated databases by internet-connected nodes
-
-Propagation of updates over RF using signed and timestamped update packages
+* A static snapshot of a public callsign database (FCC or other)
+* Optional self-attestation or license submission during setup
+* Optional download of updated databases by internet-connected nodes
+* Propagation of updates over RF using signed and timestamped update packages
 
 This ensures:
 
-Fully offline verification capability
-
-Legal operator compliance
-
-Prevents impersonation or rogue node behavior
+* Fully offline verification capability
+* Legal operator compliance
+* Prevents impersonation or rogue node behavior
 
 International support is provided via modular importers for country-specific licensing databases.
 
-🔏 Password Handling and FCC Compliance
+---
+
+## 🔏 Password Handling and FCC Compliance
 
 OffGridComm does not transmit or share passwords over RF. All passwords are:
 
-Used only for local login authentication
-
-Stored securely on-device using modern password hashing (e.g., Argon2)
-
-Never transmitted, encrypted or otherwise, in compliance with FCC Part 97
+* Used only for **local login authentication**
+* Stored securely on-device using modern password hashing (e.g., Argon2)
+* Never transmitted, encrypted or otherwise, in compliance with FCC Part 97
 
 Operator identity over the network is established via:
 
-Publicly visible callsigns
-
-Optional node-origin signatures (plaintext verifiable)
+* Publicly visible callsigns
+* Optional node-origin signatures (plaintext verifiable)
 
 This design ensures both user accountability and regulatory compliance without compromising privacy or system integrity.
 
-⚠️ Legal Notice
+---
 
-You must be a licensed amateur radio operator to use OffGridComm over RF bands. Unauthorized or encrypted use over amateur frequencies is prohibited and may violate local or national laws.
+## ⚠️ Legal Notice
 
-📜 License
+You must be a **licensed amateur radio operator** to use OffGridComm over RF bands. Unauthorized or encrypted use over amateur frequencies is **prohibited** and may violate local or national laws.
 
-This project is licensed under the MIT License, unless otherwise stated.
+---
 
-🤝 Contributions
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE), unless otherwise stated.
+
+---
+
+## 🤝 Contributions
 
 Pull requests, feature proposals, and bug reports are welcome — especially from licensed hams, emergency radio operators, and radio hackers.
 
-📱 Stay Tuned
+---
+
+## 📱 Stay Tuned
 
 OffGridComm is in active development. Future versions will support:
 
-Automated propagation scheduling
-
-RF beaconing and mesh discovery
-
-Custom protocol modes for extreme QRP conditions
-
-Print/PDF field deployment guides
+* Automated propagation scheduling
+* RF beaconing and mesh discovery
+* Custom protocol modes for extreme QRP conditions
+* Print/PDF field deployment guides
 
 Join the wave of resilient, decentralized communication.
+
+73 de OffGridComm
