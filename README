@@ -52,6 +52,17 @@ OffGridComm is designed in full alignment with **FCC Part 97** regulations:
 
 ## 🧱 Architecture Overview
 
+OffGridComm provides **two user interfaces** built on the same backend system:
+
+* **ANSI Terminal Interface (TUI)**: For classic BBS-style navigation via terminal clients (PuTTY, SyncTERM)
+* **Built-in Web Server**: Offers a retro-themed browser-based interface inspired by AOL and CompuServe
+
+Both interfaces share the same core logic and data store, ensuring:
+
+* Seamless access to messages and boards regardless of client
+* Consistent authentication and identity tracking
+* Unified user experience whether connecting via RF terminal or local browser
+
 Each **OffGridComm Node** includes:
 
 * TUI frontend with ANSI support (`ratatui`)
@@ -60,6 +71,15 @@ Each **OffGridComm Node** includes:
 * RF interface layer (Direwolf, soundmodem, etc.)
 * Node sync protocol (custom, store-and-forward)
 * Optional internet module to fetch and rebroadcast trusted data updates
+
+The built-in web server also supports **initial configuration mode**, allowing operators to:
+
+* Set their callsign, location, and license details
+* Detect and configure connected RF hardware
+* Review logs and monitor synchronization status
+* Manage local storage and network preferences
+
+This configuration mode is accessible from a local browser (e.g., via `http://192.168.0.1:8080`) and optionally supports **embedded PHP pages** served by the built-in file handler for users familiar with that environment.
 
 > Future versions will support automated scheduling, message compression, and regional relays.
 
@@ -90,6 +110,31 @@ OffGridComm is designed to be transport-agnostic. Supported RF communication mod
 * **Microwave Mesh (HamWAN / AREDN)** — High-speed regional links
 
 > Note: VARA FM is proprietary software and requires a license for full-speed operation.
+
+### 🔁 Multi-Mode Interoperability
+
+Nodes can operate multiple transmission modes in parallel, depending on available hardware and configuration:
+
+* A single node can send and receive via **AX.25**, **VARA FM**, and other modes simultaneously
+* Messages can be routed intelligently based on bandwidth, reliability, or intended recipients
+* Broadcasts may be sent redundantly over multiple modes to maximize reach
+
+This architecture allows interoperability between modern and legacy packet systems while enabling performance scaling across a diverse RF environment.
+
+### 🔊 What About Voice Communication?
+
+While OffGridComm is designed primarily for asynchronous text-based messaging, higher-quality **two-way audio communication** is under consideration for supported modes:
+
+* **VARA FM (full license)** and **FreeDV** offer potential for intelligible low-rate voice
+* Quality will depend on mode, SNR, and hardware setup
+
+Planned voice support:
+
+* Push-to-talk style audio exchange
+* Optional voice mail-style asynchronous clips
+* ID tagging and callsign framing for FCC compliance
+
+These will be opt-in features for compatible nodes with voice-capable configurations.
 
 ---
 
