@@ -1,0 +1,125 @@
+# OffGridComm
+
+**OffGridComm** is a decentralized, low-bandwidth communications platform built for ham radio frequencies. Inspired by classic BBS systems and modern mesh networks, it is designed for asynchronous, legally compliant communication in offline and grid-down environments.
+
+---
+
+## 🎯 Purpose
+
+OffGridComm enables licensed amateur radio operators to:
+
+* Send and receive direct or group messages
+* Participate in Usenet-style interest-based discussion boards
+* Relay messages node-to-node using amateur radio frequencies (no internet required)
+* Operate with a clean, ANSI-art capable text-based interface (TUI)
+* Ensure message authenticity through callsign-based identity
+* Support mouse and keyboard navigation via modern terminal emulators (e.g. PuTTY, SyncTERM)
+
+---
+
+## 🔐 Legal Compliance
+
+OffGridComm is designed in full alignment with **FCC Part 97** regulations:
+
+* No encryption is used
+* All messages are tied to valid amateur radio callsigns
+* All content is non-commercial
+* Supports only licensed operators as authenticated users
+
+---
+
+## 🚧 MVP (Minimum Viable Product)
+
+### ✅ Phase 1 Goals:
+
+* [ ] TUI interface with ANSI display and mouse/keyboard navigation
+* [ ] Callsign-based login and identity system
+* [ ] Message composition, viewing, and local storage
+* [ ] Group message board system (like Usenet)
+* [ ] RF packet exchange between nodes (via AX.25 or other modes)
+* [ ] Local deduplication and message propagation system
+* [ ] Static offline callsign database verification
+
+### 🔜 Phase 2 Goals:
+
+* [ ] Internet-connected nodes can fetch up-to-date callsign databases
+* [ ] Online nodes compress and sign these updates
+* [ ] Offline nodes receive updates via RF from trusted peers
+* [ ] Support international callsign data via modular country-specific importers
+* [ ] RF-safe distribution of additional resources (weather, bulletins, software updates)
+
+---
+
+## 🧱 Architecture Overview
+
+Each **OffGridComm Node** includes:
+
+* TUI frontend with ANSI support (`ratatui`)
+* Message system (direct, group)
+* Identity/auth engine (callsign + password)
+* RF interface layer (Direwolf, soundmodem, etc.)
+* Node sync protocol (custom, store-and-forward)
+* Optional internet module to fetch and rebroadcast trusted data updates
+
+> Future versions will support automated scheduling, message compression, and regional relays.
+
+---
+
+## 🛠️ Built With
+
+* Rust 🦠 (core logic + TUI)
+* `ratatui` and `crossterm` (terminal UI)
+* `serde` and `ron/json` (config + message formats)
+* AX.25 tools / Direwolf / VARA (RF transport, external)
+
+---
+
+## 🔄 Callsign Verification Strategy
+
+OffGridComm uses a hybrid approach:
+
+* A static snapshot of a public callsign database (FCC or other)
+* Optional self-attestation or license submission during setup
+* Optional download of updated databases by internet-connected nodes
+* Propagation of updates over RF using signed and timestamped update packages
+
+This ensures:
+
+* Fully offline verification capability
+* Legal operator compliance
+* Prevents impersonation or rogue node behavior
+
+International support is provided via modular importers for country-specific licensing databases.
+
+---
+
+## ⚠️ Legal Notice
+
+You must be a **licensed amateur radio operator** to use OffGridComm over RF bands. Unauthorized or encrypted use over amateur frequencies is **prohibited** and may violate local or national laws.
+
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE), unless otherwise stated.
+
+---
+
+## 🤝 Contributions
+
+Pull requests, feature proposals, and bug reports are welcome — especially from licensed hams, emergency radio operators, and radio hackers.
+
+---
+
+## 📱 Stay Tuned
+
+OffGridComm is in active development. Future versions will support:
+
+* Automated propagation scheduling
+* RF beaconing and mesh discovery
+* Custom protocol modes for extreme QRP conditions
+* Print/PDF field deployment guides
+
+Join the wave of resilient, decentralized communication.
+
+73 de OffGridComm

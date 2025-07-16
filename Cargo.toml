@@ -1,0 +1,170 @@
+[package]
+name = "offgridcomm"
+version = "0.1.0"
+edition = "2021"
+authors = ["George Cottrell <georgecottrell@email.com>"]
+description = "Decentralized, low-bandwidth communications platform for ham radio frequencies"
+license = "MIT"
+repository = "https://github.com/georgecottrell/offgridcomm"
+homepage = "https://github.com/georgecottrell/offgridcomm"
+keywords = ["ham-radio", "bbs", "mesh", "amateur-radio", "communication"]
+categories = ["network-programming", "command-line-utilities"]
+readme = "README.md"
+
+[dependencies]
+# Core async runtime
+tokio = { version = "1.35", features = ["full"] }
+tokio-util = "0.7"
+
+# Web framework and HTTP server
+axum = "0.7"
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors", "fs", "trace"] }
+hyper = "1.0"
+
+# WebSocket support
+tokio-tungstenite = "0.21"
+futures-util = "0.3"
+
+# Terminal User Interface (TUI)
+ratatui = "0.25"
+crossterm = "0.27"
+tui-input = "0.8"
+
+# Database
+sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "sqlite", "chrono", "uuid"] }
+rusqlite = { version = "0.29", features = ["bundled"] }
+
+# Serialization and configuration
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+ron = "0.8"
+toml = "0.8"
+
+# Compression
+flate2 = "1.0"
+lz4_flex = "0.11"
+zstd = "0.13"
+
+# Cryptography and hashing
+argon2 = "0.5"
+blake3 = "1.5"
+uuid = { version = "1.6", features = ["v4", "serde"] }
+rand = "0.8"
+
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+time = "0.3"
+
+# Networking and protocols
+bytes = "1.5"
+prost = "0.12"
+prost-types = "0.12"
+
+# Callsign validation and ham radio utilities
+regex = "1.10"
+once_cell = "1.19"
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing-appender = "0.2"
+
+# Configuration and environment
+config = "0.13"
+dotenvy = "0.15"
+
+# File system operations
+walkdir = "2.4"
+tempfile = "3.8"
+
+# Async utilities
+async-trait = "0.1"
+futures = "0.3"
+
+# HTTP client (for callsign database updates)
+reqwest = { version = "0.11", features = ["json", "rustls-tls"] }
+
+# Command line interface
+clap = { version = "4.4", features = ["derive", "env"] }
+
+# Data structures and algorithms
+indexmap = "2.1"
+dashmap = "5.5"
+bloom = "0.3"
+
+# RF and serial communication
+serialport = "4.2"
+ax25 = "0.1"  # Note: This may need to be a local dependency or custom implementation
+
+[build-dependencies]
+# Protocol buffer compilation
+prost-build = "0.12"
+
+[dev-dependencies]
+# Testing
+tokio-test = "0.4"
+mockall = "0.11"
+tempfile = "3.8"
+criterion = "0.5"
+
+[profile.release]
+# Optimize for size and performance
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.dev]
+# Faster compilation for development
+opt-level = 0
+debug = true
+split-debuginfo = "unpacked"
+
+[[bin]]
+name = "offgridcomm"
+path = "src/main.rs"
+
+[[bin]]
+name = "ogc-node"
+path = "src/bin/node.rs"
+
+[[bin]]
+name = "ogc-terminal"
+path = "src/bin/terminal.rs"
+
+[[bin]]
+name = "ogc-web"
+path = "src/bin/web.rs"
+
+[features]
+default = ["web", "terminal", "rf"]
+
+# Feature flags for different components
+web = ["axum", "tower-http", "tokio-tungstenite"]
+terminal = ["ratatui", "crossterm", "tui-input"]
+rf = ["serialport", "ax25"]
+
+# Development features
+dev = ["tokio-test", "mockall"]
+compression = ["flate2", "lz4_flex", "zstd"]
+
+# Database backends
+sqlite = ["sqlx/sqlite", "rusqlite"]
+postgres = ["sqlx/postgres"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+# Cargo configuration for cross-compilation
+[package.metadata.cross.target.armv7-unknown-linux-gnueabihf]
+dockerfile = "Dockerfile.armv7"
+
+[package.metadata.cross.target.aarch64-unknown-linux-gnu]
+dockerfile = "Dockerfile.aarch64"
