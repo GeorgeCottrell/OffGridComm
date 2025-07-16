@@ -68,9 +68,15 @@ Each **OffGridComm Node** includes:
 ## 🛠️ Built With
 
 * Rust 🦠 (core logic + TUI)
-* `ratatui` and `crossterm` (terminal UI)
-* `serde` and `ron/json` (config + message formats)
-* AX.25 tools / Direwolf / VARA (RF transport, external)
+* `ratatui`, `crossterm`, and `tui-input` (terminal UI)
+* `serde`, `serde_json`, `ron`, and `toml` (serialization and config)
+* `sqlx` and `rusqlite` (SQLite database support)
+* `tokio`, `axum`, `tower`, `hyper`, and `tokio-tungstenite` (async runtime and web stack)
+* `argon2`, `blake3`, `uuid`, and `rand` (crypto and identity)
+* `flate2`, `lz4_flex`, and `zstd` (compression)
+* `reqwest` and `dotenvy` (HTTP and environment handling)
+* `serialport` and `ax25` (RF transport, serial interface)
+* `tracing`, `anyhow`, and `thiserror` (logging and error handling)
 
 ---
 
@@ -138,3 +144,5 @@ OffGridComm is in active development. Future versions will support:
 * Print/PDF field deployment guides
 
 Join the wave of resilient, decentralized communication.
+
+73 de OffGridComm
