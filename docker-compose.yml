@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  offgridcomm:
+    build: .
+    ports:
+      - "8080:8080"  # Web interface
+      - "2222:22"    # SSH for TUI
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"  # Default serial port
+    volumes:
+      - db_data:/app/data  # Persist database
+    environment:
+      - NODE_CALLSIGN=NODE1  # Default callsign
+      - SERIAL_PORT=/dev/ttyUSB0  # Default serial port
+volumes:
+  db_data:
