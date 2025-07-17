@@ -1,7 +1,7 @@
 [package]
 name = "offgridcomm"
 version = "0.1.0"
-edition = "2021"
+edition = "2025"
 authors = ["George Cottrell <georgecottrell@email.com>"]
 description = "Decentralized, low-bandwidth communications platform for ham radio frequencies"
 license = "MIT"
